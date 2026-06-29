@@ -25,6 +25,20 @@ function initCursorGlow() {
         glow.style.top = `${e.clientY}px`;
     });
 
+    // Handle mouse click ripple effect
+    window.addEventListener('click', (e) => {
+        const ripple = document.createElement('div');
+        ripple.className = 'click-ripple';
+        ripple.style.left = `${e.pageX}px`;
+        ripple.style.top = `${e.pageY}px`;
+        document.body.appendChild(ripple);
+        
+        // Remove after animation finishes
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    });
+
     // Handle Project Cards hover glow effect
     const cards = document.querySelectorAll('.project-card');
     cards.forEach(card => {
@@ -73,6 +87,15 @@ function initCanvasBackground() {
         createParticles();
     });
 
+    window.addEventListener('click', (e) => {
+        // Spawn burst particles on click at the click coordinates
+        const clickX = e.clientX;
+        const clickY = e.clientY;
+        for (let i = 0; i < 15; i++) {
+            particles.push(new BurstParticle(clickX, clickY));
+        }
+    });
+
     class Particle {
         constructor(x, y) {
             this.x = x;
@@ -112,6 +135,37 @@ function initCanvasBackground() {
         }
     }
 
+    class BurstParticle extends Particle {
+        constructor(x, y) {
+            super(x, y);
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 2 + 1.2;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.radius = Math.random() * 2 + 1;
+            this.alpha = 1.0;
+            this.decay = Math.random() * 0.02 + 0.015;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 240, 255, ${this.alpha})`;
+            ctx.fill();
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.alpha -= this.decay;
+            if (this.alpha <= 0) {
+                return false; // dead
+            }
+            this.draw();
+            return true; // alive
+        }
+    }
+
     function createParticles() {
         particles = [];
         // Scale particle density with screen width
@@ -146,7 +200,13 @@ function initCanvasBackground() {
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => p.update());
+        
+        // Filter out dead burst particles
+        particles = particles.filter(p => {
+            const alive = p.update();
+            return alive !== false;
+        });
+        
         connect();
         animationId = requestAnimationFrame(animate);
     }
