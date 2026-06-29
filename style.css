@@ -1550,7 +1550,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -1559,23 +1558,7 @@ body {
     color: var(--text-dark);
 }
 
-.maker-note {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.ag-glow {
-    color: var(--accent-cyan);
-    font-weight: bold;
-    text-shadow: 0 0 6px var(--accent-cyan);
-    transition: var(--transition-fast);
-}
-
-.ag-glow:hover {
-    color: var(--accent-magenta);
-    text-shadow: 0 0 10px var(--accent-magenta);
-}
+/* Footer custom styles removed */
 
 /* ==========================================
    SCROLL REVEAL INTERSECTION OBSERVER
