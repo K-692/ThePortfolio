@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initContactTerminal();
     initScrollReveal();
+    initLiveTimers();
 });
 
 /* ==========================================
@@ -326,5 +327,95 @@ function initScrollReveal() {
     targetElements.forEach(el => {
         el.classList.add('reveal');
         observer.observe(el);
+    });
+}
+
+/* ==========================================
+   8. DYNAMIC LIVE TIMERS FOR PRESENT POSITIONS
+   ========================================== */
+function initLiveTimers() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    timelineItems.forEach(item => {
+        const dateEl = item.querySelector('.timeline-date');
+        const contentEl = item.querySelector('.timeline-content');
+        if (!dateEl || !contentEl) return;
+        
+        const dateText = dateEl.textContent.trim().toUpperCase();
+        if (dateText.includes('- PRESENT')) {
+            const parts = dateText.split('-');
+            if (parts.length < 2) return;
+            
+            const startStr = parts[0].trim(); // e.g. "05/2025"
+            const dateParts = startStr.split('/');
+            if (dateParts.length !== 2) return;
+            
+            const month = parseInt(dateParts[0], 10);
+            const year = parseInt(dateParts[1], 10);
+            
+            // Create start date (set to 1st day of the month)
+            const startDate = new Date(year, month - 1, 1);
+            
+            // Create dynamic container
+            const timerContainer = document.createElement('div');
+            timerContainer.className = 'live-timer-badge';
+            timerContainer.innerHTML = `<span class="live-timer-dot"></span> <span class="live-timer-text">INITIALIZING TRACKING...</span>`;
+            
+            // Insert right after the timeline-header or prepend
+            const headerEl = contentEl.querySelector('.timeline-header');
+            if (headerEl) {
+                headerEl.insertAdjacentElement('afterend', timerContainer);
+            } else {
+                contentEl.prepend(timerContainer);
+            }
+            
+            function updateTimer() {
+                const now = new Date();
+                let diffMs = now - startDate;
+                if (diffMs < 0) diffMs = 0;
+                
+                // Calculate elapsed time parameters
+                let years = now.getFullYear() - startDate.getFullYear();
+                let months = now.getMonth() - startDate.getMonth();
+                let days = now.getDate() - startDate.getDate();
+                let hours = now.getHours() - startDate.getHours();
+                let minutes = now.getMinutes() - startDate.getMinutes();
+                let seconds = now.getSeconds() - startDate.getSeconds();
+                
+                // Adjustment logic for date math
+                if (seconds < 0) {
+                    minutes--;
+                    seconds += 60;
+                }
+                if (minutes < 0) {
+                    hours--;
+                    minutes += 60;
+                }
+                if (hours < 0) {
+                    days--;
+                    hours += 24;
+                }
+                if (days < 0) {
+                    months--;
+                    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                    days += prevMonth.getDate();
+                }
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+                
+                let durationStr = "";
+                if (years > 0) durationStr += `${years}y `;
+                if (months > 0 || years > 0) durationStr += `${months}m `;
+                if (days > 0 || months > 0 || years > 0) durationStr += `${days}d `;
+                durationStr += `${hours}h ${minutes}m ${seconds}s`;
+                
+                timerContainer.querySelector('.live-timer-text').textContent = `ACTIVE DURATION: ${durationStr}`;
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
     });
 }

@@ -1685,3 +1685,44 @@ body {
         text-align: center;
     }
 }
+
+/* ==========================================
+   LIVE TIMER COMPONENT
+   ========================================== */
+.live-timer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin: 12px 0 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #10b981;
+    text-shadow: 0 0 5px rgba(16, 185, 129, 0.3);
+    width: fit-content;
+    border-left: 3px solid #10b981;
+    animation: badgeGlow 2s infinite alternate;
+}
+
+.live-timer-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulseGreen 1.5s infinite;
+}
+
+@keyframes pulseGreen {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px #10b981; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+@keyframes badgeGlow {
+    from { box-shadow: 0 0 5px rgba(16, 185, 129, 0.02); }
+    to { box-shadow: 0 0 12px rgba(16, 185, 129, 0.12); }
+}
