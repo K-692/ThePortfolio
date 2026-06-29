@@ -899,18 +899,20 @@ body {
     width: auto;
     max-width: 115px;
     object-fit: contain;
-    /* Always visible: softer white tint by default */
-    filter: brightness(0) invert(1) opacity(0.55);
-    transition: all 0.4s ease;
+    /* Completely invisible — no box, no shape */
+    opacity: 0;
+    filter: brightness(1) saturate(1.3);
+    transform: scale(0.85);
+    transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
     flex-shrink: 0;
 }
 
 .timeline-item:hover .timeline-brand-logo,
 .timeline-item:focus-within .timeline-brand-logo {
-    /* Full brand color + glow on hover */
-    filter: brightness(1) saturate(1.3) drop-shadow(0 0 8px rgba(0,240,255,0.35));
-    transform: scale(1.1);
+    /* Fade in with full brand color + subtle glow */
     opacity: 1;
+    filter: brightness(1) saturate(1.3) drop-shadow(0 0 8px rgba(0, 240, 255, 0.4));
+    transform: scale(1);
 }
 
 .role-title {
@@ -2031,11 +2033,13 @@ body {
     }
 }
 
-/* ---- Touch devices: disable hover-only effects ---- */
+/* ---- Touch devices: show logos since hover isn't available ---- */
 @media (hover: none) {
-    .timeline-item:hover .timeline-brand-logo {
-        filter: brightness(0) invert(1) opacity(0.85);
-        transform: none;
+    /* On touch screens, logos can't be hovered — make them visible */
+    .timeline-brand-logo {
+        opacity: 0.6;
+        filter: brightness(0) invert(1);
+        transform: scale(1);
     }
     .cursor-glow {
         display: none;
