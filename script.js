@@ -224,7 +224,7 @@ function initTypewriter() {
 
     const titles = [
         "AI ENGINEER.",
-        "PhD RESEARCHER.",
+        "PhD SCHOLAR.",
         "DATA SCIENTIST.",
         "PROBLEM SOLVER."
     ];
@@ -406,15 +406,24 @@ function initLiveTimers() {
             const parts = dateText.split('-');
             if (parts.length < 2) return;
             
-            const startStr = parts[0].trim(); // e.g. "05/2025"
+            const startStr = parts[0].trim(); // e.g. "05/2025" or "04/07/2025"
             const dateParts = startStr.split('/');
-            if (dateParts.length !== 2) return;
             
-            const month = parseInt(dateParts[0], 10);
-            const year = parseInt(dateParts[1], 10);
-            
-            // Create start date (set to 1st day of the month)
-            const startDate = new Date(year, month - 1, 1);
+            let startDate;
+            if (dateParts.length === 2) {
+                // MM/YYYY format
+                const month = parseInt(dateParts[0], 10);
+                const year = parseInt(dateParts[1], 10);
+                startDate = new Date(year, month - 1, 1);
+            } else if (dateParts.length === 3) {
+                // DD/MM/YYYY format
+                const day = parseInt(dateParts[0], 10);
+                const month = parseInt(dateParts[1], 10);
+                const year = parseInt(dateParts[2], 10);
+                startDate = new Date(year, month - 1, day);
+            } else {
+                return;
+            }
             
             // Create dynamic container
             const timerContainer = document.createElement('div');

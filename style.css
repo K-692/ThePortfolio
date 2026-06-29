@@ -242,6 +242,9 @@ body {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-family: var(--font-mono);
     font-size: 20px;
     font-weight: 700;
@@ -249,6 +252,22 @@ body {
     text-decoration: none;
     letter-spacing: 1px;
     transition: var(--transition-fast);
+}
+
+.nav-logo-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-cyan);
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    background: rgba(0, 240, 255, 0.05);
+    transition: var(--transition-fast);
+}
+
+.logo:hover .nav-logo-img {
+    transform: scale(1.1) rotate(8deg);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.7);
 }
 
 .logo-accent {
@@ -863,10 +882,34 @@ body {
 .timeline-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: wrap;
     gap: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.role-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.timeline-brand-logo {
+    height: 36px;
+    width: auto;
+    max-width: 110px;
+    object-fit: contain;
+    /* Show as white silhouette on dark bg */
+    filter: brightness(0) invert(1) opacity(0.75);
+    transition: all 0.35s ease;
+    flex-shrink: 0;
+}
+
+.timeline-item:hover .timeline-brand-logo {
+    /* Reveal true brand colors on hover */
+    filter: drop-shadow(0 0 6px rgba(0,240,255,0.4)) brightness(1.15) saturate(1.2);
+    transform: scale(1.08);
+    opacity: 1;
 }
 
 .role-title {
@@ -1762,5 +1805,195 @@ body {
         width: 140px;
         height: 140px;
         opacity: 0;
+    }
+}
+
+/* ==============================================
+   COMPREHENSIVE RESPONSIVE / DEVICE-FLEXIBLE
+   ============================================== */
+
+/* ---- Enhancements for tablets/phones (max 768px) ---- */
+@media (max-width: 768px) {
+    /* Timeline brand logos wrap below role info on small screens */
+    .timeline-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .timeline-brand-logo {
+        height: 28px;
+        max-width: 90px;
+    }
+
+    /* Hero visual sizing */
+    .avatar-container {
+        width: 260px;
+        height: 260px;
+    }
+    .avatar-img {
+        max-height: 280px;
+    }
+
+    /* Stats grid responsive */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Projects grid responsive */
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Section spacing */
+    .section {
+        padding: 60px 0;
+    }
+
+    /* Container padding on small screens */
+    .container,
+    .hero-container {
+        padding: 0 16px;
+    }
+
+    /* Navbar logo text */
+    .logo {
+        font-size: 16px;
+        gap: 8px;
+    }
+    .logo-type {
+        display: none;
+    }
+
+    /* Typography */
+    .role-title {
+        font-size: 17px;
+    }
+    .timeline-date {
+        font-size: 12px;
+    }
+
+    /* CTA buttons full-width on mobile */
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+    }
+    .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    /* Live timer badge */
+    .live-timer-badge {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+
+    /* Footer links */
+    .footer-links {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* ---- Small phones (max 480px) ---- */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 32px;
+        letter-spacing: 2px;
+    }
+    .hero-subtitle {
+        font-size: 14px;
+    }
+    .hero-description {
+        font-size: 14px;
+    }
+
+    /* Avatar shrinks */
+    .avatar-container {
+        width: 200px;
+        height: 200px;
+    }
+    .avatar-img {
+        max-height: 220px;
+    }
+
+    /* Single-column stats */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Section titles */
+    .section-title {
+        font-size: 26px;
+    }
+
+    /* Timeline card padding */
+    .timeline-content {
+        padding: 16px;
+    }
+
+    /* Skill tags */
+    .timeline-tags {
+        gap: 6px;
+    }
+    .tag {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    /* Hide decorative HUD elements on very small screens */
+    .hud-element {
+        display: none;
+    }
+    .hex-grid,
+    .hex-border-outer,
+    .hex-border-inner {
+        display: none;
+    }
+}
+
+/* ---- Very small phones (max 360px) ---- */
+@media (max-width: 360px) {
+    .hero-title {
+        font-size: 26px;
+    }
+    .avatar-container {
+        width: 170px;
+        height: 170px;
+    }
+    .nav-logo-img {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+/* ---- Large / 4K screens (min 1400px) ---- */
+@media (min-width: 1400px) {
+    .container,
+    .nav-container,
+    .hero-container {
+        max-width: 1400px;
+    }
+    .hero-title {
+        font-size: 72px;
+    }
+    .avatar-container {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+/* ---- Touch devices: disable hover-only effects ---- */
+@media (hover: none) {
+    .timeline-item:hover .timeline-brand-logo {
+        filter: brightness(0) invert(1) opacity(0.85);
+        transform: none;
+    }
+    .cursor-glow {
+        display: none;
     }
 }
